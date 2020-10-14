@@ -1,15 +1,9 @@
 // Package fibonacci implements functions to work with fibonacci sequence
 package fibonacci
 
-import (
-	"errors"
-)
-
 // At calculates fibonacci value at specified index
 func At(n int) (int, error) {
-	if n < 0 || n > 20 {
-		return 0, errors.New("sorry, we have paws instead of hands and so can only work with indexes in range 0..20")
-	} else if n == 0 {
+	if n == 0 {
 		return 0, nil
 	} else if n == 1 {
 		return 1, nil
@@ -26,7 +20,7 @@ func At(n int) (int, error) {
 
 // Recursive At() variant
 // func At(n int) int {
-//   if n < 0 || n > 19 {
+//   if n < 0 || n > 20 {
 // 		log.Fatal("position value is invalid")
 // 	} else if n == 0 {
 // 		return 0
