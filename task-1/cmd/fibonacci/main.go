@@ -1,14 +1,19 @@
 package main
 
 import (
-	"../../pkg/fibonacci"
+	"pkg/fibonacci"
 	"flag"
 	"fmt"
 )
 
-var nFlag = flag.Int("n", 1, "position of required number (must be in range 1..20)")
+var nFlag = flag.Int("n", 0, "index of required number (must be in range 0..20)")
 
 func main() {
 	flag.Parse()
-	fmt.Println(fibonacci.At(*nFlag - 1))
+	result, err := fibonacci.At(*nFlag)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(result)
+	}
 }
