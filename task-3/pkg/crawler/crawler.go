@@ -9,12 +9,27 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Scan осуществляет рекурсивный обход ссылок сайта, указанного в URL,
-// с учётом глубины перехода по ссылкам, переданной в depth.
-func Scan(url string, depth int) (data map[string]string, err error) {
+// Crawler представляет собой набор настроек для сканирования содержимого сайтов
+type Crawler struct {
+	Url   string
+	Depth int
+}
+
+// New создает новый экземпляр типа Crawler с указанными параметрами
+func New(url string, depth int) Crawler {
+	c := Crawler{
+		Url:   url,
+		Depth: depth,
+	}
+	return c
+}
+
+// Scan осуществляет рекурсивный обход ссылок сайта, указанного в Url,
+// с учётом глубины перехода по ссылкам, указанной в Depth.
+func (c Crawler) Scan() (data map[string]string, err error) {
 	data = make(map[string]string)
 
-	parse(url, url, depth, data)
+	parse(c.Url, c.Url, c.Depth, data)
 
 	return data, nil
 }
