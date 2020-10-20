@@ -5,18 +5,12 @@ import (
 	"fmt"
 	"os"
 	"pkg/crawler"
+	"pkg/engine"
 	"strings"
 )
 
 func main() {
-	url := "https://habr.com"
-	depth := 2
-	fmt.Printf("Scanning '%s'...\n", url)
-	titles, err := crawler.Scan(url, depth)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	crw := crawler.New("https://habr.com", 1)
 
 	for {
 		fmt.Println("Enter search phrase (leave empty to exit):")
@@ -33,13 +27,16 @@ func main() {
 			break
 		}
 
-		fmt.Printf("Results for '%s':\n", phrase)
-		for k, v := range titles {
-			if strings.Contains(k, phrase) || strings.Contains(v, phrase) {
-				fmt.Printf("%s - '%s'\n", k, v)
-			}
+		found, err := engine.Search(crw, phrase)
+		if err != nil {
+			fmt.Println(err)
+			return
 		}
-		fmt.Println()
+
+		fmt.Printf("Results for '%s':\n", phrase)
+		for _, v := range found {
+			fmt.Println(v)
+		}
 	}
 
 	fmt.Println("Bye!")
