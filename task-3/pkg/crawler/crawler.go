@@ -9,24 +9,24 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Crawler представляет собой набор настроек для сканирования содержимого сайтов
+// Crawler представляет собой поисковый робот для обхода сайтов
 type Crawler struct {
 	Url   string
 	Depth int
 }
 
 // New создает новый экземпляр типа Crawler с указанными параметрами
-func New(url string, depth int) Crawler {
+func New(url string, depth int) *Crawler {
 	c := Crawler{
 		Url:   url,
 		Depth: depth,
 	}
-	return c
+	return &c
 }
 
 // Scan осуществляет рекурсивный обход ссылок сайта, указанного в Url,
 // с учётом глубины перехода по ссылкам, указанной в Depth.
-func (c Crawler) Scan() (data map[string]string, err error) {
+func (c *Crawler) Scan() (data map[string]string, err error) {
 	data = make(map[string]string)
 
 	parse(c.Url, c.Url, c.Depth, data)
