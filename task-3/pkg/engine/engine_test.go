@@ -1,14 +1,14 @@
 package engine
 
 import (
-	"pkg/crawler_stub"
+	"pkg/stub"
 	"testing"
 )
 
 func TestSearch(t *testing.T) {
-	stub := crawlerStub.New()
+	scanner := stub.NewScanner()
 
-	found, err := Search(stub, "little")
+	found, err := Search(scanner, "little")
 	if err != nil {
 		t.Errorf("err = %s; want nil", err)
 	}
@@ -18,7 +18,7 @@ func TestSearch(t *testing.T) {
 		t.Errorf("len(found) = %d; want %d", got, want)
 	}
 
-	found, err = Search(stub, "the")
+	found, err = Search(scanner, "the")
 	if err != nil {
 		t.Errorf("err = %s; want nil", err)
 	}
@@ -28,7 +28,7 @@ func TestSearch(t *testing.T) {
 		t.Errorf("len(found) = %d; want %d", got, want)
 	}
 
-	found, err = Search(stub, "doesn't exist")
+	found, err = Search(scanner, "doesn't exist")
 	if err != nil {
 		t.Errorf("err = %s; want nil", err)
 	}

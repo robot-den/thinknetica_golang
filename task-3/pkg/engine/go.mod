@@ -1,6 +1,6 @@
 module engine
 
-require pkg/crawler_stub v1.0.0
-replace pkg/crawler_stub => ../../pkg/crawler_stub
+require pkg/stub v1.0.0
+replace pkg/stub => ../../pkg/stub
 
 go 1.15
