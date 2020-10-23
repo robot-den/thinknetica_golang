@@ -1,0 +1,2 @@
+# don't ignore go.sum files in real projects!
+go.sum
