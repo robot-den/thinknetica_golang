@@ -13,9 +13,9 @@ func NewScanner() *Scanner {
 // Scan возвращает статический словарь из трех пар
 func (c *Scanner) Scan() (data map[string]string, err error) {
 	data = map[string]string{
-		"One":   "A little copying is better than a little dependency.",
-		"Two":   "Design the architecture, name the components, document the details.",
-		"Three": "Burn the heretic, kill the mutant, purge the unclean.",
+		"http://one.com/":   "A little copying is better than a little dependency.",
+		"http://two.com/":   "Design the architecture, name the components, document the details.",
+		"http://three.com/": "Burn the heretic, kill the mutant, purge the unclean.",
 	}
 
 	return data, nil

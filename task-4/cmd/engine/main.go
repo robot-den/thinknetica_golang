@@ -5,35 +5,38 @@ import (
 	"fmt"
 	"os"
 	"pkg/crawler"
-	"pkg/engine"
+	"pkg/index"
 	"strings"
 )
 
 func main() {
-	crw := crawler.New("https://habr.com", 1)
+	// В production сканирование сайтов и индексирование результатов выполнялось бы отдельно от сервиса поиска
+	fmt.Println("Scanning sites and indexing results...")
+	crw := crawler.New("https://habr.com", 2)
+	ind := index.New(crw)
+	err := ind.Fill()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	for {
-		fmt.Println("Enter search phrase (leave empty to exit):")
+		fmt.Println("Enter search word (leave empty to exit):")
 		reader := bufio.NewReader(os.Stdin)
-		phrase, err := reader.ReadString('\n')
+		word, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
-		phrase = strings.TrimSuffix(phrase, "\r\n")
-		phrase = strings.TrimSuffix(phrase, "\n")
-		if phrase == "" {
+		word = strings.TrimSuffix(word, "\r\n")
+		word = strings.TrimSuffix(word, "\n")
+		if word == "" {
 			break
 		}
 
-		found, err := engine.Search(crw, phrase)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		fmt.Printf("Results for '%s':\n", phrase)
+		found := ind.Search(word)
+		fmt.Printf("Results for '%s':\n", word)
 		for _, v := range found {
 			fmt.Println(v)
 		}
