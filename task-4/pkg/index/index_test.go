@@ -1,4 +1,4 @@
-package engine
+package index
 
 import (
 	"pkg/stub"
@@ -7,31 +7,24 @@ import (
 
 func TestSearch(t *testing.T) {
 	scanner := stub.NewScanner()
+	ind := New(scanner)
+	ind.Fill()
 
-	found, err := Search(scanner, "little")
-	if err != nil {
-		t.Errorf("err = %s; want nil", err)
-	}
+	found := ind.Search("http")
 	got := len(found)
-	want := 1
+	want := 3
 	if got != want {
 		t.Errorf("len(found) = %d; want %d", got, want)
 	}
 
-	found, err = Search(scanner, "the")
-	if err != nil {
-		t.Errorf("err = %s; want nil", err)
-	}
+	found = ind.Search("little")
 	got = len(found)
-	want = 2
+	want = 1
 	if got != want {
 		t.Errorf("len(found) = %d; want %d", got, want)
 	}
 
-	found, err = Search(scanner, "doesn't exist")
-	if err != nil {
-		t.Errorf("err = %s; want nil", err)
-	}
+	found = ind.Search("golang")
 	got = len(found)
 	want = 0
 	if got != want {
