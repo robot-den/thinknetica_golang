@@ -7,16 +7,11 @@ import (
 	"strings"
 )
 
-// Scanner предоставляет возможность получить словарь
-type Scanner interface {
-	Scan() (map[string]string, error)
-}
-
 // Index предоставляет методы для индексирования, а так же временно(!) выполняет функции базы данных (хранение и поиск)
 type Index struct {
-	scanner       Scanner
 	storage       []Record
 	invertedIndex map[string][]int
+	IdProvider    int
 }
 
 // Record представляет собой тип, хранящий данные по отдельной странице
@@ -27,11 +22,11 @@ type Record struct {
 }
 
 // New создает новый экземпляр типа Index
-func New(s Scanner) *Index {
+func New() *Index {
 	ind := Index{
-		scanner:       s,
 		storage:       []Record{},
 		invertedIndex: map[string][]int{},
+		IdProvider:    1,
 	}
 	return &ind
 }
@@ -62,30 +57,21 @@ func (i *Index) Search(word string) []string {
 	return found
 }
 
-// Fill получает данные от scanner и заполняет хранилище и инвертированный индекс
-func (i *Index) Fill() error {
-	data, err := i.scanner.Scan()
-	if err != nil {
-		return err
-	}
-
-	i.fillStorage(&data)
+// Fill заполняет хранилище и инвертированный индекс
+func (i *Index) Fill(data *map[string]string) {
+	i.fillStorage(data)
 	i.fillInvertedIndex()
-
-	return nil
 }
 
 // fillStorage заполняет хранилище элементами Record и выполняет сортировку storage по record.Id
 func (i *Index) fillStorage(data *map[string]string) {
-	id := 1
-
 	for link, title := range *data {
 		rec := Record{
-			Id:    id,
+			Id:    i.IdProvider,
 			Url:   link,
 			Title: title,
 		}
-		id++
+		i.IdProvider++
 		i.storage = append(i.storage, rec)
 	}
 
