@@ -7,8 +7,9 @@ import (
 
 func TestSearch(t *testing.T) {
 	scanner := stub.NewScanner()
-	ind := New(scanner)
-	ind.Fill()
+	data, _ := scanner.Scan()
+	ind := New()
+	ind.Fill(&data)
 
 	found := ind.Search("http")
 	got := len(found)
