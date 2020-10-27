@@ -10,7 +10,6 @@ import (
 )
 
 func main() {
-	// В production сканирование сайтов и индексирование результатов выполнялось бы отдельно от сервиса поиска
 	fmt.Println("Scanning sites and indexing results...")
 	crw := crawler.New("https://habr.com", 2)
 	webData, err := crw.Scan()
