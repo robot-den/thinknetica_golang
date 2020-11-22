@@ -1,3 +1,8 @@
 # don't ignore go.sum files in real projects!
 go.sum
 .idea
+
+node_modules
+task-10/prometheus.yml
+task-10/cmd/gosearch/webapp/
+task-10/web/
