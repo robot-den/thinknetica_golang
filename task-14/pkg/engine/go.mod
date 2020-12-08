@@ -1,6 +1,5 @@
 module pkg/engine
 
-
 require pkg/model v1.0.0
 replace pkg/model => ../../pkg/model
 

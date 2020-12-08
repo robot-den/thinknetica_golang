@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"pkg/plugin"
+	"pkg/plugin/netsrv"
 	"fmt"
 	"os"
 	"pkg/crawler"
@@ -22,23 +24,32 @@ type Service struct {
 	index   index.Service
 	engine  *engine.Service
 	scanner crawler.Scanner
+	plugins []plugin.Service
 }
 
 func main() {
 	service := new()
 
 	go service.scan()
+	for _, pl := range service.plugins {
+		go pl.Run()
+	}
 	service.readline()
 }
 
 func new() *Service {
 	str := memory.NewStorage()
 	ind := hash.NewService()
+	eng := engine.NewService(ind, str)
+	plugins := []plugin.Service{
+		netsrv.New(eng, "tcp4", ":8000"),
+	}
 	s := Service{
 		storage: str,
 		index:   ind,
-		engine:  engine.NewService(ind, str),
+		engine:  eng,
 		scanner: &webscnr.WebScnr{},
+		plugins: plugins,
 	}
 
 	return &s
