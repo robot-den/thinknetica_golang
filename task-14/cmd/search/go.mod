@@ -24,4 +24,10 @@ replace pkg/storage => ../../pkg/storage
 require pkg/storage/memory v1.0.0
 replace pkg/storage/memory => ../../pkg/storage/memory
 
+require pkg/plugin v1.0.0
+replace pkg/plugin => ../../pkg/plugin
+
+require pkg/plugin/netsrv v1.0.0
+replace pkg/plugin/netsrv => ../../pkg/plugin/netsrv
+
 go 1.15
