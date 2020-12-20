@@ -58,3 +58,8 @@ func (s *Storage) Write(documents []model.Document) []model.Document {
 
 	return docsWithIDs
 }
+
+// ReadAll возвращает все документы содержащиеся в хранилище
+func (s *Storage) ReadAll() []model.Document {
+	return s.documents
+}
