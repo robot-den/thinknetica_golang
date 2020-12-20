@@ -16,12 +16,14 @@ import (
 type storage interface {
 	Search(string) []model.Document
 }
+
 // NetSrv представляет собой плагин
 type NetSrv struct {
 	storage storage
 	network string
 	address string
 }
+
 // New позволяет создать новый объект плагина с заданными настройками
 func New(serv storage, network, address string) *NetSrv {
 	s := NetSrv{

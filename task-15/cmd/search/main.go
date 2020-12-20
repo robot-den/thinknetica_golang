@@ -2,8 +2,6 @@ package main
 
 import (
 	"bufio"
-	"pkg/plugin"
-	"pkg/plugin/netsrv"
 	"fmt"
 	"os"
 	"pkg/crawler"
@@ -12,6 +10,9 @@ import (
 	"pkg/index"
 	"pkg/index/hash"
 	"pkg/model"
+	"pkg/plugin"
+	"pkg/plugin/netsrv"
+	"pkg/plugin/webapp"
 	"pkg/storage"
 	"pkg/storage/memory"
 	"strings"
@@ -43,6 +44,7 @@ func new() *Service {
 	eng := engine.NewService(ind, str)
 	plugins := []plugin.Service{
 		netsrv.New(eng, "tcp4", ":8000"),
+		webapp.New(ind, str, ":9000"),
 	}
 	s := Service{
 		storage: str,

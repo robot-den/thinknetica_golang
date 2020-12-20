@@ -37,6 +37,11 @@ func (s *Service) Update(docs []model.Document) {
 	}
 }
 
+// ReadAll возвращает все содержимое индекса
+func (s *Service) ReadAll() map[string][]int {
+	return s.index
+}
+
 // parseLexemes разбирает текст на лексемы
 func parseLexemes(lexemes *map[string]bool, url, sep, tr string) {
 	for _, word := range strings.Split(url, sep) {
