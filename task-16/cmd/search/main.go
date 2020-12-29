@@ -1,9 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"pkg/api"
 	"pkg/crawler"
 	"pkg/crawler/webscnr"
 	"pkg/engine"
@@ -12,7 +11,6 @@ import (
 	"pkg/model"
 	"pkg/storage"
 	"pkg/storage/memory"
-	"strings"
 	"sync"
 )
 
@@ -22,13 +20,14 @@ type Service struct {
 	index   index.Service
 	engine  *engine.Service
 	scanner crawler.Scanner
+	api     *api.Service
 }
 
 func main() {
 	service := new()
 
 	go service.scan()
-	service.readline()
+	service.api.Serve()
 }
 
 func new() *Service {
@@ -41,6 +40,7 @@ func new() *Service {
 		index:   ind,
 		engine:  eng,
 		scanner: &webscnr.WebScnr{},
+		api:     api.NewService(eng, ":9000"),
 	}
 
 	return &s
@@ -90,8 +90,7 @@ func (s *Service) scan() {
 	// Reads and saves results from workers. This goroutine done when scan() func closes channel it iterates
 	go func(ch <-chan []model.Document) {
 		for docs := range ch {
-			docsWithIds := s.storage.Write(docs)
-			s.index.Update(docsWithIds)
+			s.engine.BatchCreate(docs)
 		}
 	}(rawDocs)
 
@@ -110,30 +109,4 @@ func (s *Service) scanWorker(wg *sync.WaitGroup, jobs <-chan scanJob, results ch
 		}
 		results <- docs
 	}
-}
-
-func (s *Service) readline() {
-	for {
-		fmt.Println("Enter search word (leave empty to exit):")
-		reader := bufio.NewReader(os.Stdin)
-		word, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		word = strings.TrimSuffix(word, "\r\n")
-		word = strings.TrimSuffix(word, "\n")
-		if word == "" {
-			break
-		}
-
-		found := s.engine.Search(word)
-		fmt.Printf("Results for '%s':\n", word)
-		for _, v := range found {
-			fmt.Println(v)
-		}
-	}
-
-	fmt.Println("Bye!")
 }

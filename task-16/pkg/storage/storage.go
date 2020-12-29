@@ -9,4 +9,7 @@ import (
 type Service interface {
 	Read([]int) []model.Document
 	Write([]model.Document) []model.Document
+	Update(model.Document) error
+	Delete(int) error
+	ReadAll() []model.Document
 }
