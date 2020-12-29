@@ -24,4 +24,7 @@ replace pkg/storage => ../../pkg/storage
 require pkg/storage/memory v1.0.0
 replace pkg/storage/memory => ../../pkg/storage/memory
 
+require pkg/api v1.0.0
+replace pkg/api => ../../pkg/api
+
 go 1.15
