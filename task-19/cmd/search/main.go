@@ -10,6 +10,7 @@ import (
 	"task-19/pkg/index"
 	"task-19/pkg/index/hash"
 	"task-19/pkg/model"
+	"task-19/pkg/rpcsrv"
 	"task-19/pkg/storage"
 	"task-19/pkg/storage/memory"
 )
@@ -21,12 +22,14 @@ type Service struct {
 	engine  *engine.Service
 	scanner crawler.Scanner
 	api     *api.Service
+	rpcsrv  *rpcsrv.RpcSrv
 }
 
 func main() {
 	service := new()
 
 	go service.scan()
+	go service.rpcsrv.Serve()
 	service.api.Serve()
 }
 
@@ -41,6 +44,7 @@ func new() *Service {
 		engine:  eng,
 		scanner: &webscnr.WebScnr{},
 		api:     api.NewService(eng, ":9000"),
+		rpcsrv:  rpcsrv.New(eng, ":9100"),
 	}
 
 	return &s
