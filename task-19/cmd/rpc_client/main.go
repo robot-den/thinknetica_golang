@@ -10,22 +10,8 @@ import (
 )
 
 func main() {
-	readline()
-}
-
-// readline читает запрос пользователя и выполняет поиск документов
-func readline() {
 	for {
-		fmt.Println("Enter search token (leave empty to exit):")
-		reader := bufio.NewReader(os.Stdin)
-		token, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		token = strings.TrimSuffix(token, "\r\n")
-		token = strings.TrimSuffix(token, "\n")
+		token, err := readline()
 		if token == "" {
 			break
 		}
@@ -43,6 +29,20 @@ func readline() {
 	}
 
 	fmt.Println("Bye!")
+}
+
+// readline читает запрос пользователя
+func readline() (string, error) {
+	fmt.Println("Enter search token (leave empty to exit):")
+	reader := bufio.NewReader(os.Stdin)
+	token, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+
+	token = strings.TrimSuffix(token, "\r\n")
+	token = strings.TrimSuffix(token, "\n")
+	return token, nil
 }
 
 // search выполняет поиск документов на сервере с помощью RPC
