@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  pg:
+    image: postgres:13.1
+    environment:
+      POSTGRES_USER: golang
+      POSTGRES_PASSWORD: golang
+#    volumes:
+#      - ../games_docker_files/pg:/var/lib/postgresql/data
+    ports:
+      - '54321:5432'
