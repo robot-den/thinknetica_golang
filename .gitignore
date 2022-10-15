@@ -1,6 +1,7 @@
 # don't ignore go.sum files in real projects!
 go.sum
 .idea
+task-22/**/*.json
 
 node_modules
 task-10/prometheus.yml
