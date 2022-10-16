@@ -1,7 +1,8 @@
-// Package game_one contains calculation logic for GameOne
+// Package game_one. The calculator file contains all preparations that are needed in game_selector logic (implement interface game.Calculator)
 package game_one
 
 import (
+	"task-22/pkg/iterator"
 	"task-22/pkg/model"
 )
 
@@ -26,6 +27,8 @@ func (g *GameOne) Setup(variant string) {
 
 // Iterate iterates selected roundsCount times and fills results
 func (g *GameOne) Iterate(roundsCount int) {
+	iterator.Iterate(g, roundsCount)
+
 	// TODO: implement common iteration logic here (with freespins, respins and any bonus rounds and writings of results
 }
 
